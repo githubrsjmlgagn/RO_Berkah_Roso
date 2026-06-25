@@ -172,12 +172,12 @@ body{
 </style>
 
 <div class="app">
-  <h2 class="sr-only">Aplikasi rekap operasional harian Chicken Day</h2>
+  <h2 class="sr-only">Aplikasi rekap operasional harian Berkah Roso</h2>
 
   <div class="masthead">
     <div class="brandmark">
       <span class="eyebrow">Rekap Operasional</span>
-      <h1>Chicken Day</h1>
+      <h1>Berkah Roso</h1>
       <div class="date" id="tgl-header"></div>
     </div>
     <button class="newday" onclick="askNewDay()"><span class="ic" aria-hidden="true">✦</span> Hari Baru</button>
@@ -454,7 +454,7 @@ function shareWA(){
   const td=entries.reduce((a,e)=>a+e.debit,0);
   const tk=entries.reduce((a,e)=>a+e.kredit,0);
   const pet=entries[entries.length-1].petugas||'-';
-  let txt=`*REKAP OPERASIONAL - CHICKEN DAY*\n${displayDate}\nPetugas: ${pet}\n\n`;
+  let txt=`*REKAP OPERASIONAL - BERKAH ROSO*\n${displayDate}\nPetugas: ${pet}\n\n`;
   entries.forEach((e,i)=>{
     txt+=`${i+1}. ${e.subject} - ${e.detail}`;
     if(e.ket) txt+=` (${e.ket})`;
@@ -467,7 +467,7 @@ function shareWA(){
 }
 
 function askFileName(ext){
-  const def = `RO_${todayStr}_CD_`;
+  const def = `RO_${todayStr}_BR_`;
   let name = prompt(`Nama file (.${ext}):`, def);
   if(name===null) return null;            // petugas menekan Batal
   name = name.trim();
