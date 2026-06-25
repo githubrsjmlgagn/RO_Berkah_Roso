@@ -1,4 +1,4 @@
-const CACHE = 'berkahroso-v1';
+const CACHE = 'berkahroso-v2';
 const ASSETS = [
   './',
   './index.html',
