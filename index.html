@@ -1,0 +1,529 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#7A1E1E">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{
+  --ink:#2B2118;
+  --ink-soft:#6B5D4F;
+  --ink-faint:#A89A87;
+  --brand:#7A1E1E;
+  --brand-deep:#5E1414;
+  --gold:#D9A116;
+  --gold-deep:#B8850C;
+  --paper:#F7F2E7;
+  --card:#FFFEFA;
+  --line:#E6DDCA;
+  --line-soft:#EFE8D7;
+  --credit:#7A1E1E;
+  --debit:#3D6B4F;
+  --radius:14px;
+  --radius-sm:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  font-feature-settings:'tnum' 1;
+}
+.app{max-width:440px;margin:0 auto;padding:20px 18px 40px}
+
+/* ---------- Masthead ---------- */
+.masthead{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:26px}
+.brandmark{display:flex;flex-direction:column;gap:3px}
+.brandmark .eyebrow{font-size:10px;letter-spacing:0.22em;text-transform:uppercase;color:var(--brand);font-weight:600}
+.brandmark h1{font-size:21px;font-weight:600;letter-spacing:-0.02em;line-height:1.05}
+.brandmark .date{font-size:11.5px;color:var(--ink-soft);margin-top:5px}
+.newday{
+  appearance:none;background:none;border:1px solid var(--line);
+  color:var(--ink-soft);font-size:11px;font-weight:500;letter-spacing:0.03em;
+  padding:7px 12px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  display:flex;align-items:center;gap:5px;transition:all .15s ease;flex-shrink:0;margin-top:2px;
+}
+.newday:hover{border-color:var(--brand);color:var(--brand)}
+.newday:active{transform:scale(0.97)}
+
+/* ---------- Hero: Saldo ---------- */
+.hero{
+  background:var(--brand);color:#fff;border-radius:var(--radius);
+  padding:24px 24px 22px;margin-bottom:14px;position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;
+  background:radial-gradient(circle,rgba(255,255,255,0.06),transparent 70%);
+}
+.hero .label{font-size:10.5px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.75;font-weight:500}
+.hero .saldo{font-size:42px;font-weight:600;letter-spacing:-0.025em;line-height:1;margin-top:8px;padding-bottom:16px;border-bottom:2px solid var(--gold)}
+.hero .saldo .rp{font-size:18px;font-weight:500;opacity:0.7;margin-right:4px;letter-spacing:0}
+.hero .meta{display:flex;justify-content:space-between;align-items:flex-end;margin-top:20px;position:relative}
+.hero .petugas-wrap{display:flex;flex-direction:column;gap:2px}
+.hero .petugas-wrap .k{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;opacity:0.6}
+.hero .petugas-wrap .v{font-size:13px;font-weight:500}
+.hero .count{font-size:11px;opacity:0.7}
+
+/* ---------- Debit / Kredit duo ---------- */
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px}
+.metric{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px}
+.metric .k{font-size:9.5px;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:600;display:flex;align-items:center;gap:5px}
+.metric .v{font-size:19px;font-weight:600;letter-spacing:-0.02em;margin-top:6px}
+.metric .v .rp{font-size:11px;font-weight:500;color:var(--ink-faint);margin-right:3px}
+.metric.debit .v{color:var(--debit)}
+.metric.kredit .v{color:var(--credit)}
+.dot{width:6px;height:6px;border-radius:999px;display:inline-block}
+.dot.d{background:var(--debit)}
+.dot.k{background:var(--credit)}
+
+/* ---------- Section heads ---------- */
+.sec-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.sec-head .num{font-size:10px;font-weight:700;color:var(--gold-deep);letter-spacing:0.05em}
+.sec-head .ttl{font-size:13px;font-weight:600;letter-spacing:-0.01em}
+.sec-head .rule{flex:1;height:1px;background:var(--line)}
+.sec-head .badge{font-size:10px;color:var(--ink-faint);font-weight:500}
+
+/* ---------- Form ---------- */
+.form{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-bottom:30px}
+.edit-banner{
+  display:none;align-items:center;gap:7px;background:#FCEFC7;border:1px solid #EBD79A;
+  color:#7A5A12;font-size:11px;font-weight:500;padding:8px 11px;border-radius:8px;margin-bottom:14px;
+}
+.field{margin-bottom:13px}
+.field:last-of-type{margin-bottom:0}
+.field label{font-size:10.5px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink-soft);font-weight:600;display:block;margin-bottom:6px}
+.field input,.field textarea{
+  width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;
+  font-size:14px;background:#fff;color:var(--ink);font-family:inherit;transition:border-color .15s ease;
+}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--brand)}
+.field input::placeholder,.field textarea::placeholder{color:var(--ink-faint)}
+.field textarea{resize:none;height:54px;line-height:1.4}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.btn{
+  width:100%;padding:13px;border-radius:9px;font-size:13.5px;font-weight:600;letter-spacing:0.01em;
+  cursor:pointer;border:none;font-family:inherit;transition:all .15s ease;display:flex;align-items:center;justify-content:center;gap:7px;
+}
+.btn-primary{background:var(--brand);color:#fff;margin-top:6px}
+.btn-primary:hover{background:var(--brand-deep)}
+.btn-primary:active{transform:scale(0.99)}
+.btn-ghost{background:none;color:var(--ink-soft);border:1px solid var(--line);margin-top:8px}
+.btn-ghost:hover{border-color:var(--ink-soft)}
+
+/* ---------- Entry list ---------- */
+.entry-list{display:flex;flex-direction:column}
+.entry{padding:15px 2px;border-bottom:1px solid var(--line-soft);position:relative;transition:background .15s ease}
+.entry:first-child{padding-top:2px}
+.entry.editing{background:#FCEFC7;margin:0 -10px;padding-left:12px;padding-right:12px;border-radius:8px;border-bottom-color:transparent}
+.entry .top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.entry .idx{font-size:10px;color:var(--ink-faint);font-weight:600;letter-spacing:0.05em;flex-shrink:0;width:26px}
+.entry .body{flex:1;min-width:0}
+.entry .subject{font-size:14.5px;font-weight:600;letter-spacing:-0.01em}
+.entry .detail{font-size:12.5px;color:var(--ink-soft);margin-top:2px;line-height:1.4}
+.entry .saldo-tag{font-size:13px;font-weight:700;color:var(--gold-deep);white-space:nowrap;flex-shrink:0}
+.entry .saldo-tag.neg{color:var(--brand)}
+.entry .flow{display:flex;gap:14px;margin-top:9px;margin-left:26px}
+.entry .flow span{font-size:12px;font-weight:500;display:flex;align-items:center;gap:4px}
+.entry .flow .d{color:var(--debit)}
+.entry .flow .k{color:var(--credit)}
+.entry .acts{display:flex;gap:8px;margin-top:11px;margin-left:26px}
+.entry .acts button{
+  font-size:11px;font-weight:600;letter-spacing:0.03em;padding:5px 13px;border-radius:999px;
+  cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-family:inherit;transition:all .15s ease;
+}
+.entry .acts .edit:hover{border-color:var(--brand);color:var(--brand)}
+.entry .acts .del{color:var(--brand)}
+.entry .acts .del:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+.empty{text-align:center;color:var(--ink-faint);font-size:12.5px;padding:34px 0;line-height:1.6}
+.empty .big{display:block;font-size:13px;color:var(--ink-soft);font-weight:500;margin-bottom:3px}
+
+/* ---------- Send ---------- */
+.send{margin-top:30px}
+.send-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.send-btn{
+  padding:13px 6px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;border:none;font-family:inherit;
+  display:flex;flex-direction:column;align-items:center;gap:6px;transition:all .15s ease;
+}
+.send-btn i{font-size:18px}
+.send-btn:active{transform:scale(0.97)}
+.send-wa{background:#1FAE5A;color:#fff}
+.send-wa:hover{background:#1A9A4F}
+.send-xl{background:var(--ink);color:#fff}
+.send-xl:hover{background:#3A2E22}
+.send-csv{background:#fff;color:var(--ink-soft);border:1px solid var(--line)}
+.send-csv:hover{border-color:var(--ink-soft)}
+
+/* ---------- Modal ---------- */
+.modal-bg{position:fixed;inset:0;background:rgba(43,33,24,0.5);display:none;align-items:center;justify-content:center;z-index:100;padding:24px;backdrop-filter:blur(2px)}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:16px;padding:24px;width:100%;max-width:300px;text-align:center}
+.modal h3{font-size:16px;font-weight:600;margin-bottom:7px;letter-spacing:-0.01em}
+.modal p{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;line-height:1.5}
+.modal-btns{display:flex;gap:9px}
+.modal-btns button{flex:1;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink-soft);font-family:inherit}
+.modal-btns .confirm{background:var(--brand);color:#fff;border:none}
+.modal-btns .confirm:hover{background:var(--brand-deep)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.ic{display:inline-block;font-style:normal;line-height:1}
+</style>
+
+<div class="app">
+  <h2 class="sr-only">Aplikasi rekap operasional harian Chicken Day</h2>
+
+  <div class="masthead">
+    <div class="brandmark">
+      <span class="eyebrow">Rekap Operasional</span>
+      <h1>Chicken Day</h1>
+      <div class="date" id="tgl-header"></div>
+    </div>
+    <button class="newday" onclick="askNewDay()"><span class="ic" aria-hidden="true">✦</span> Hari Baru</button>
+  </div>
+
+  <div class="hero">
+    <div class="label">Saldo Akhir</div>
+    <div class="saldo" id="sum-saldo"><span class="rp">Rp</span>0</div>
+    <div class="meta">
+      <div class="petugas-wrap">
+        <span class="k">Petugas</span>
+        <span class="v" id="sum-petugas">—</span>
+      </div>
+      <div class="count"><span id="entry-count">0</span> transaksi</div>
+    </div>
+  </div>
+
+  <div class="duo">
+    <div class="metric debit">
+      <div class="k"><span class="dot d"></span> Total Debit</div>
+      <div class="v" id="sum-debit"><span class="rp">Rp</span>0</div>
+    </div>
+    <div class="metric kredit">
+      <div class="k"><span class="dot k"></span> Total Kredit</div>
+      <div class="v" id="sum-kredit"><span class="rp">Rp</span>0</div>
+    </div>
+  </div>
+
+  <div class="sec-head">
+    <span class="num">01</span>
+    <span class="ttl" id="form-title">Input Transaksi</span>
+    <span class="rule"></span>
+  </div>
+
+  <div class="form">
+    <div class="edit-banner" id="edit-banner"><span class="ic" aria-hidden="true">✎</span> Sedang merevisi entry — ubah lalu simpan.</div>
+    <div class="field">
+      <label>Tanggal</label>
+      <input type="date" id="f-tanggal">
+    </div>
+    <div class="field">
+      <label>Subject</label>
+      <input type="text" id="f-subject" placeholder="Pasar, Toko ABC, dll">
+    </div>
+    <div class="field">
+      <label>Detail</label>
+      <input type="text" id="f-detail" placeholder="Cabai, tomat, dll">
+    </div>
+    <div class="field">
+      <label>Keterangan</label>
+      <textarea id="f-ket" placeholder="1 kg, harga eceran, dll"></textarea>
+    </div>
+    <div class="field pair">
+      <div>
+        <label>Debit (Rp)</label>
+        <input type="number" id="f-debit" placeholder="0" min="0" inputmode="numeric">
+      </div>
+      <div>
+        <label>Kredit (Rp)</label>
+        <input type="number" id="f-kredit" placeholder="0" min="0" inputmode="numeric">
+      </div>
+    </div>
+    <div class="field">
+      <label>Petugas</label>
+      <input type="text" id="f-petugas" placeholder="Nama petugas">
+    </div>
+    <button class="btn btn-primary" onclick="submitEntry()"><span class="ic" aria-hidden="true">✓</span> <span id="btn-label">Simpan Entry</span></button>
+    <button class="btn btn-ghost" id="btn-cancel" style="display:none" onclick="cancelEdit()"><span class="ic" aria-hidden="true">✕</span> Batal Revisi</button>
+  </div>
+
+  <div class="sec-head">
+    <span class="num">02</span>
+    <span class="ttl">Entry Hari Ini</span>
+    <span class="rule"></span>
+    <span class="badge"><span id="entry-count-2">0</span> entry</span>
+  </div>
+
+  <div class="entry-list" id="entry-list">
+    <div class="empty"><span class="big">Belum ada entry</span>Silakan input transaksi pertama di atas.</div>
+  </div>
+
+  <div class="send" id="send-section" style="display:none">
+    <div class="sec-head">
+      <span class="num">03</span>
+      <span class="ttl">Kirim ke Kantor Pusat</span>
+      <span class="rule"></span>
+    </div>
+    <div class="send-grid">
+      <button class="send-btn send-wa" onclick="shareWA()"> WhatsApp</button>
+      <button class="send-btn send-xl" onclick="downloadXLSX()"> Excel</button>
+      <button class="send-btn send-csv" onclick="downloadCSV()"> CSV</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-del">
+  <div class="modal">
+    <h3>Hapus Entry?</h3>
+    <p>Entry ini akan dihapus permanen dari daftar hari ini.</p>
+    <div class="modal-btns">
+      <button onclick="closeModal()">Batal</button>
+      <button class="confirm" onclick="confirmDelete()">Hapus</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="modal-newday">
+  <div class="modal">
+    <h3>Mulai Hari Baru?</h3>
+    <p>Semua entry hari ini akan dihapus. Pastikan data sudah dikirim ke kantor pusat lewat WhatsApp atau Excel.</p>
+    <div class="modal-btns">
+      <button onclick="closeNewDay()">Batal</button>
+      <button class="confirm" onclick="confirmNewDay()">Reset</button>
+    </div>
+  </div>
+</div>
+
+<script src="xlsx.full.min.js"></script>
+<script>
+let entries = [];
+let editId = null;
+let deleteId = null;
+let idCounter = 1;
+
+const STORAGE_KEY = 'bukuKasHarian';
+
+function saveState(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({entries, idCounter})); }
+  catch(err){ console.warn('Gagal menyimpan data lokal:', err); }
+}
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return;
+    const data = JSON.parse(raw);
+    if(Array.isArray(data.entries)){
+      entries = data.entries;
+      idCounter = data.idCounter || (entries.reduce((m,e)=>Math.max(m,e.id),0)+1);
+    }
+  }catch(err){ console.warn('Gagal memuat data lokal:', err); }
+}
+
+const today = new Date();
+const pad = n => String(n).padStart(2,'0');
+const todayStr = `${today.getFullYear()}-${pad(today.getMonth()+1)}-${pad(today.getDate())}`;
+const displayDate = today.toLocaleDateString('id-ID',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+document.getElementById('tgl-header').textContent = displayDate;
+document.getElementById('f-tanggal').value = todayStr;
+
+function fmt(n){return Math.round(n).toLocaleString('id-ID')}
+function fmtRp(n){return 'Rp '+fmt(n)}
+
+function calcSaldo(){
+  let s=0;
+  entries.forEach(e=>{s=s+e.debit-e.kredit;e.saldo=s;});
+}
+
+function updateSummary(){
+  const td=entries.reduce((a,e)=>a+e.debit,0);
+  const tk=entries.reduce((a,e)=>a+e.kredit,0);
+  const lastPetugas=entries.length?entries[entries.length-1].petugas:'';
+  document.getElementById('sum-debit').innerHTML=`<span class="rp">Rp</span>${fmt(td)}`;
+  document.getElementById('sum-kredit').innerHTML=`<span class="rp">Rp</span>${fmt(tk)}`;
+  document.getElementById('sum-saldo').innerHTML=`<span class="rp">Rp</span>${fmt(td-tk)}`;
+  document.getElementById('sum-petugas').textContent=lastPetugas||'—';
+  document.getElementById('entry-count').textContent=entries.length;
+  document.getElementById('entry-count-2').textContent=entries.length;
+  document.getElementById('send-section').style.display=entries.length?'block':'none';
+}
+
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+function renderList(){
+  const el=document.getElementById('entry-list');
+  if(!entries.length){
+    el.innerHTML='<div class="empty"><span class="big">Belum ada entry</span>Silakan input transaksi pertama di atas.</div>';
+    return;
+  }
+  el.innerHTML=entries.map((e,i)=>`
+    <div class="entry ${editId===e.id?'editing':''}">
+      <div class="top">
+        <span class="idx">${String(i+1).padStart(2,'0')}</span>
+        <div class="body">
+          <div class="subject">${esc(e.subject)||'—'}</div>
+          <div class="detail">${esc(e.detail)}${e.ket?' &middot; '+esc(e.ket):''}</div>
+        </div>
+        <span class="saldo-tag ${e.saldo<0?'neg':''}">${fmtRp(e.saldo)}</span>
+      </div>
+      <div class="flow">
+        ${e.debit?`<span class="d"><span class="ic" aria-hidden="true">↘</span> Debit ${fmtRp(e.debit)}</span>`:''}
+        ${e.kredit?`<span class="k"><span class="ic" aria-hidden="true">↗</span> Kredit ${fmtRp(e.kredit)}</span>`:''}
+      </div>
+      <div class="acts">
+        <button class="edit" onclick="editEntry(${e.id})"><span class="ic" aria-hidden="true">✎</span> Edit</button>
+        <button class="del" onclick="askDelete(${e.id})"><span class="ic" aria-hidden="true">🗑</span> Hapus</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function submitEntry(){
+  const subj=document.getElementById('f-subject').value.trim();
+  const det=document.getElementById('f-detail').value.trim();
+  const ket=document.getElementById('f-ket').value.trim();
+  const deb=parseFloat(document.getElementById('f-debit').value)||0;
+  const kre=parseFloat(document.getElementById('f-kredit').value)||0;
+  const pet=document.getElementById('f-petugas').value.trim();
+  const tgl=document.getElementById('f-tanggal').value;
+  if(!subj&&!det){alert('Mohon isi minimal Subject atau Detail.');return;}
+  if(editId!==null){
+    const idx=entries.findIndex(e=>e.id===editId);
+    if(idx>-1) entries[idx]={...entries[idx],tanggal:tgl,subject:subj,detail:det,ket,debit:deb,kredit:kre,petugas:pet};
+    exitEditMode();
+  } else {
+    entries.push({id:idCounter++,tanggal:tgl,subject:subj,detail:det,ket,debit:deb,kredit:kre,petugas:pet,saldo:0});
+  }
+  calcSaldo(); updateSummary(); renderList(); saveState();
+  ['f-subject','f-detail','f-ket','f-debit','f-kredit'].forEach(id=>document.getElementById(id).value='');
+}
+
+function editEntry(id){
+  const e=entries.find(x=>x.id===id);
+  if(!e) return;
+  editId=id;
+  document.getElementById('f-tanggal').value=e.tanggal;
+  document.getElementById('f-subject').value=e.subject;
+  document.getElementById('f-detail').value=e.detail;
+  document.getElementById('f-ket').value=e.ket;
+  document.getElementById('f-debit').value=e.debit||'';
+  document.getElementById('f-kredit').value=e.kredit||'';
+  document.getElementById('f-petugas').value=e.petugas;
+  document.getElementById('btn-label').textContent='Update Entry';
+  document.getElementById('form-title').textContent='Edit Transaksi';
+  document.getElementById('btn-cancel').style.display='flex';
+  document.getElementById('edit-banner').style.display='flex';
+  renderList();
+  document.querySelector('.form').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function exitEditMode(){
+  editId=null;
+  document.getElementById('btn-label').textContent='Simpan Entry';
+  document.getElementById('form-title').textContent='Input Transaksi';
+  document.getElementById('btn-cancel').style.display='none';
+  document.getElementById('edit-banner').style.display='none';
+}
+
+function cancelEdit(){
+  exitEditMode();
+  ['f-subject','f-detail','f-ket','f-debit','f-kredit'].forEach(id=>document.getElementById(id).value='');
+  renderList();
+}
+
+function askDelete(id){deleteId=id;document.getElementById('modal-del').classList.add('show');}
+function closeModal(){deleteId=null;document.getElementById('modal-del').classList.remove('show');}
+function confirmDelete(){
+  const wasEditing = editId===deleteId;
+  entries=entries.filter(e=>e.id!==deleteId);
+  if(wasEditing) cancelEdit();
+  calcSaldo();updateSummary();renderList();closeModal();saveState();
+}
+
+function askNewDay(){document.getElementById('modal-newday').classList.add('show');}
+function closeNewDay(){document.getElementById('modal-newday').classList.remove('show');}
+function confirmNewDay(){
+  entries=[];idCounter=1;exitEditMode();
+  ['f-subject','f-detail','f-ket','f-debit','f-kredit'].forEach(id=>document.getElementById(id).value='');
+  saveState();updateSummary();renderList();closeNewDay();
+}
+
+function shareWA(){
+  if(!entries.length) return;
+  const td=entries.reduce((a,e)=>a+e.debit,0);
+  const tk=entries.reduce((a,e)=>a+e.kredit,0);
+  const pet=entries[entries.length-1].petugas||'-';
+  let txt=`*REKAP OPERASIONAL - CHICKEN DAY*\n${displayDate}\nPetugas: ${pet}\n\n`;
+  entries.forEach((e,i)=>{
+    txt+=`${i+1}. ${e.subject} - ${e.detail}`;
+    if(e.ket) txt+=` (${e.ket})`;
+    if(e.debit) txt+=`\n   Debit: ${fmtRp(e.debit)}`;
+    if(e.kredit) txt+=`\n   Kredit: ${fmtRp(e.kredit)}`;
+    txt+=`\n   Saldo: ${fmtRp(e.saldo)}\n\n`;
+  });
+  txt+=`*Total Debit: ${fmtRp(td)}*\n*Total Kredit: ${fmtRp(tk)}*\n*Saldo Akhir: ${fmtRp(td-tk)}*`;
+  window.open('https://wa.me/?text='+encodeURIComponent(txt));
+}
+
+function askFileName(ext){
+  const def = `RO_${todayStr}_CD_`;
+  let name = prompt(`Nama file (.${ext}):`, def);
+  if(name===null) return null;            // petugas menekan Batal
+  name = name.trim();
+  if(!name) name = def;                   // kosong -> pakai default
+  name = name.replace(/[\\/:*?"<>|]/g,'-');// buang karakter ilegal nama file
+  if(!name.toLowerCase().endsWith('.'+ext)) name += '.'+ext;
+  return name;
+}
+
+function downloadXLSX(){
+  if(!entries.length) return;
+  const fname = askFileName('xlsx');
+  if(fname===null) return;
+  const aoa=[['No','Tanggal','Subject','Detail','Keterangan','Debit','Kredit','Saldo','Petugas']];
+  entries.forEach((e,i)=>{
+    aoa.push([i+1, e.tanggal, e.subject, e.detail, e.ket, e.debit||0, e.kredit||0, null, e.petugas]);
+  });
+  aoa.push(['','','','','TOTAL', null, null, null, '']);
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  const n=entries.length;
+  for(let i=0;i<n;i++){
+    const r=i+2;
+    const prev=i===0?'0':`H${r-1}`;
+    ws[`H${r}`]={t:'n', f:`${prev}+F${r}-G${r}`};
+  }
+  const tr=n+2;
+  ws[`F${tr}`]={t:'n', f:`SUM(F2:F${n+1})`};
+  ws[`G${tr}`]={t:'n', f:`SUM(G2:G${n+1})`};
+  ws[`H${tr}`]={t:'n', f:`F${tr}-G${tr}`};
+  ws['!cols']=[{wch:5},{wch:12},{wch:16},{wch:16},{wch:20},{wch:13},{wch:13},{wch:13},{wch:14}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Kas Harian');
+  XLSX.writeFile(wb, fname);
+}
+
+function downloadCSV(){
+  if(!entries.length) return;
+  const fname = askFileName('csv');
+  if(fname===null) return;
+  const header='No,Tanggal,Subject,Detail,Keterangan,Debit,Kredit,Saldo,Petugas\n';
+  const rows=entries.map((e,i)=>`${i+1},${e.tanggal},"${e.subject}","${e.detail}","${e.ket}",${e.debit},${e.kredit},${e.saldo},"${e.petugas}"`).join('\n');
+  const blob=new Blob(['\uFEFF'+header+rows],{type:'text/csv;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=fname;a.click();
+  URL.revokeObjectURL(url);
+}
+
+loadState();
+calcSaldo();
+updateSummary();
+renderList();
+
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(err=>console.warn('SW gagal:',err));
+  });
+}
+</script>
