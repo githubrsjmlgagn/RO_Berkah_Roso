@@ -1,7 +1,7 @@
 {
-  "name": "Chicken Day — Rekap Operasional",
-  "short_name": "Chicken Day",
-  "description": "Rekap operasional harian toko Chicken Day",
+  "name": "Berkah Roso — Rekap Operasional",
+  "short_name": "Berkah Roso",
+  "description": "Rekap operasional harian Berkah Roso",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
