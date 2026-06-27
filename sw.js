@@ -1,4 +1,4 @@
-const CACHE = 'berkahroso-v2';
+const CACHE = 'berkahroso-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -24,7 +24,9 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Fetch: cache-first untuk aset lokal, network untuk sisanya (mis. Google Fonts)
+// Fetch: cache-first untuk aset lokal, network-first (dengan cache fallback) untuk eksternal
+// (mis. Google Fonts, ikon Flaticon CDN — perlu sempat online sekali agar ikon ikut
+//  tersimpan dan tetap tampil saat offline)
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (url.origin === location.origin) {
@@ -36,7 +38,14 @@ self.addEventListener('fetch', e => {
       }).catch(() => caches.match('./index.html')))
     );
   } else {
-    // Aset eksternal (font): coba network, fallback ke cache bila ada
-    e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+    // Aset eksternal (font, ikon Flaticon): coba network dulu, simpan ke cache bila sukses,
+    // fallback ke cache bila offline/gagal
+    e.respondWith(
+      fetch(e.request).then(res => {
+        const copy = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, copy));
+        return res;
+      }).catch(() => caches.match(e.request))
+    );
   }
 });
